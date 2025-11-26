@@ -1,356 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Irys Piloting Services</title>
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-/* Reset */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-    font-family: 'Montserrat', sans-serif;
-    background: radial-gradient(circle at center, #001136 0%, #000000 80%);
-    color: #e0e0e0;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+:root{
+  --bg-center: #001136;
+  --bg-edge: #000000;
+  --gold-soft: #c9b272;
+  --gold: #bfa15a;
+  --muted: #bfcad8;
+  --accent: rgba(191,161,90,0.12);
+  --card-w: 220px;
+  --card-h: 220px;
+  --glass: rgba(255,255,255,0.03);
 }
 
-/* Header */
-header {
-    text-align: center;
-    padding: 60px 20px 40px 20px;
-    background: rgba(0,0,0,0.6);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+/* --- Reset & base --- */
+* { box-sizing: border-box; margin:0; padding:0; }
+html,body{ height:100%; }
+body{
+  font-family: 'Montserrat', sans-serif;
+  background: radial-gradient(circle at center, var(--bg-center) 0%, var(--bg-edge) 80%);
+  color: #e6e6e6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+  overflow-x:hidden;
+  scroll-behavior: smooth;
+  padding-bottom: 120px; /* room for mobile CTA */
 }
 
-header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    color: #bfa15a;
-    margin-bottom: 10px;
-    text-shadow: 0 0 2px #bfa15a, 0 0 4px #bfa15a;
-    animation: shimmer 3s infinite;
+/* --- Top sticky mini nav --- */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
 }
-
-header p {
-    font-size: 1.1rem;
-    color: #b0b0b0;
+.nav-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:10px 18px;
 }
-
-/* Shimmer animation */
-@keyframes shimmer {
-    0% { text-shadow: 0 0 1px #bfa15a; }
-    50% { text-shadow: 0 0 3px #bfa15a, 0 0 2px #bfa15a; }
-    100% { text-shadow: 0 0 1px #bfa15a; }
+.nav-logo { font-family:'Playfair Display', serif; color:var(--gold); font-size:1.05rem; margin-right:auto; }
+.nav-links { display:flex; gap:8px; align-items:center; }
+.nav-links a {
+  color:var(--muted);
+  text-decoration:none;
+  font-weight:600;
+  padding:8px 10px;
+  border-radius:8px;
+  transition:.18s;
+  font-size:14px;
 }
+.nav-links a:hover{ background: rgba(255,255,255,0.02); color: #fff; transform: translateY(-2px); }
 
-/* Container */
-.container {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 0 20px;
+/* --- Header --- */
+header{
+  text-align:center;
+  padding:44px 20px 24px;
 }
+header h1{
+  font-family:'Playfair Display', serif;
+  color: var(--gold);
+  font-size:2.8rem;
+  letter-spacing:0.6px;
+  margin-bottom:6px;
+  text-shadow: 0 0 6px rgba(191,161,90,0.12);
+}
+header p{ color: #bdbdbd; font-size:14px; margin-bottom:6px; }
 
-/* Section headers */
+/* --- container --- */
+.container{ max-width:1000px; margin:28px auto; padding:0 20px; }
+
+/* --- Section titles with subtle animation --- */
 h2 {
-    font-family: 'Playfair Display', serif;
-    color: #c5b77f;
-    font-size: 2rem;
-    margin-bottom: 25px;
-    border-bottom: 1.5px solid #c5b77f;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-shadow: 0 0 2px rgba(197,183,127,0.5);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s forwards;
+  font-family:'Playfair Display', serif;
+  color: var(--gold-soft);
+  font-size:1.9rem;
+  margin:28px 0 12px;
+  display:flex; align-items:center; gap:10px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(191,161,90,0.06);
+  transform: translateY(12px);
+  opacity: 0;
+  animation: slideUp .55s forwards;
+}
+@keyframes slideUp { to { transform:none; opacity:1; } }
+h2 i{ color: var(--gold-soft); font-size:20px; }
+
+/* --- Rates grid --- */
+.rates{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap:20px;
+  margin-bottom:8px;
 }
 
-h2 i {
-    font-size: 1.5rem;
+/* --- Card base (keeps old look but enhanced) --- */
+.rate-card{
+  position:relative;
+  border-radius:12px;
+  padding:18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(191,161,90,0.07);
+  overflow:hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
+  min-height:120px;
 }
 
-/* Fade-in animation */
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* corner gild accents */
+.rate-card .corner {
+  position:absolute;
+  width:18px; height:18px;
+  border:2px solid rgba(191,161,90,0.95);
+  border-radius:2px;
+  opacity:.9;
+}
+.rate-card .corner.tl{ top:10px; left:10px; transform: rotate(0deg); border-right:none; border-bottom:none; }
+.rate-card .corner.tr{ top:10px; right:10px; transform: rotate(0deg); border-left:none; border-bottom:none; }
+.rate-card .corner.bl{ bottom:10px; left:10px; transform: rotate(0deg); border-right:none; border-top:none; }
+.rate-card .corner.br{ bottom:10px; right:10px; transform: rotate(0deg); border-left:none; border-top:none; }
+
+/* faint constellation ornament (pseudo) */
+.rate-card .orn {
+  position:absolute;
+  right:12px; top:12px;
+  width:56px; height:56px;
+  background: radial-gradient(circle at 30% 30%, rgba(191,161,90,0.06), transparent 40%);
+  filter: blur(1px);
+  opacity:.7;
+  border-radius:6px;
 }
 
-/* Rate cards grid */
-.rates {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+/* hover & shimmer */
+.rate-card:hover{ transform: translateY(-6px); box-shadow: 0 14px 35px rgba(0,0,0,0.6); }
+.rate-card:hover .shine{ opacity:1; transform: translateX(0); }
+
+/* gold linear shine */
+.rate-card .shine{
+  position:absolute; top:0; left:-40%;
+  width:40%; height:100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+  transform: translateX(-20%);
+  opacity:0;
+  transition: all .7s ease;
 }
 
-/* Card design */
-.rate-card {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 25px 20px;
-    border-radius: 15px;
-    backdrop-filter: blur(8px);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(197,183,127,0.1);
-}
-
-.rate-card::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(197,183,127,0.07), transparent 70%);
-    transform: rotate(45deg);
-    pointer-events: none;
-    transition: all 0.3s ease;
-}
-
-.rate-card:hover::before {
-    transform: rotate(0deg) scale(1.05);
-}
-
-.rate-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(197,183,127,0.15), 0 0 10px rgba(197,183,127,0.2);
-}
-
+/* FINAL NORMALIZATION FOR ALL RATE CARDS, INCLUDING ACHIEVEMENTS */
 .rate-card h3 {
     font-family: 'Playfair Display', serif;
-    color: #c5b77f;
+    color: #c5b77f !important;        /* consistent strong gold */
     font-size: 1.4rem;
-    margin-bottom: 8px;
-    text-shadow: 0 0 1px #c5b77f;
+    font-weight: 700;
+    text-shadow: 0 0 2px rgba(197,183,127,0.5);
 }
 
 .rate-card p {
     font-family: 'Montserrat', sans-serif;
+    color: #bfa15a !important;        /* muted gold for prices */
+    font-size: 1rem;
     font-weight: 600;
     font-style: italic;
-    color: #bfa15a;
-    font-size: 1rem;
-    margin-bottom: 4px;
-    text-shadow: 0 0 1px #bfa15a;
+    text-shadow: 0 0 1px rgba(191,161,90,0.4);
 }
 
-/* Pyramid layout */
-.pyramid-row {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    align-items: stretch;
-    margin-bottom: 10px;
+/* multi-line small */
+.rate-card .multi { font-size:0.95rem; color:#e8dfb0; line-height:1.18; }
+
+/* --- Pyramid layout (keeps your earlier structure) --- */
+.pyramid-row{ display:flex; gap:20px; justify-content:center; align-items:stretch; margin-bottom:10px; }
+.pyramid-row .rate-card{ width:240px; }
+
+/* --- Info box / FAQ styling --- */
+.info-box{
+  background: rgba(255,255,255,0.02);
+  border-left: 3px solid rgba(191,161,90,0.9);
+  padding:18px;
+  border-radius:10px;
+  color: #d6d6d6;
+  margin-bottom:20px;
 }
-.pyramid-row .rate-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 240px;
+.info-box p, .info-box li { margin-bottom:10px; }
+.info-box ul{ margin-left:18px; }
+
+/* --- Achievements icons --- */
+.ach-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:10px; }
+.ach { padding:12px; border-radius:10px; background: rgba(255,255,255,0.015); border:1px solid rgba(191,161,90,0.05); }
+
+/* --- Download Rate Sheet button --- */
+.actions { display:flex; gap:12px; align-items:center; margin:18px 0 4px; flex-wrap:wrap; }
+.btn {
+  background: linear-gradient(90deg, rgba(191,161,90,0.14), rgba(191,161,90,0.08));
+  color: #fff;
+  border:1px solid rgba(191,161,90,0.14);
+  padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:700;
+  transition: all .18s ease;
+}
+.btn:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(191,161,90,0.06); }
+
+/* --- Floating contact + GCash modal --- */
+.contact-buttons{ position: fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:10px; z-index:200; }
+.contact-btn {
+  width:52px;height:52px;border-radius:999px;display:grid;place-items:center;
+  background: rgba(191,161,90,0.07); color:var(--gold); font-size:18px; text-decoration:none; border:1px solid rgba(191,161,90,0.10);
+  transition: transform .12s ease;
+}
+.contact-btn:hover{ transform: scale(1.08); box-shadow:0 8px 22px rgba(191,161,90,0.06); }
+
+/* Tooltips */
+.tooltip { position:relative; }
+.tooltip:hover::after {
+  content: attr(data-tip);
+  position:absolute; right:60px; top:6px;
+  background: rgba(0,0,0,0.6); color:#fff; padding:6px 10px; border-radius:6px; font-size:13px;
+  border:1px solid rgba(255,255,255,0.04);
 }
 
-/* Note */
-.note {
-    font-size: 0.9rem;
-    color: #aaa;
-    margin-top: 10px;
-    text-align: center;
-}
+/* mobile CTA bar (message me) */
+.mobile-cta { display:none; position:fixed; left:0; right:0; bottom:0; z-index:220; background: linear-gradient(90deg, rgba(0,0,0,0.8), rgba(0,0,0,0.9)); padding:10px 16px; border-top:1px solid rgba(255,255,255,0.03); }
+.mobile-cta .cta-btn{ background: linear-gradient(90deg, rgba(191,161,90,0.12), rgba(191,161,90,0.06)); color:white; padding:10px 12px; border-radius:10px; font-weight:700; border:1px solid rgba(191,161,90,0.12); cursor:pointer; }
 
-/* Info box */
-.info-box {
-    background: rgba(255,255,255,0.03);
-    padding: 20px 25px;
-    border-left: 3px solid #c5b77f;
-    border-radius: 10px;
-    margin-bottom: 40px;
-    backdrop-filter: blur(6px);
-}
+/* footer */
+footer{ text-align:center; padding:26px 12px; color:#9fb0c9; margin-top:34px; border-top:1px solid rgba(255,255,255,0.02); }
 
-.info-box p, .info-box li {
-    color: #d6d6d6;
-    line-height: 1.6;
-    margin-bottom: 10px;
+/* small screens adjustments */
+@media (max-width:860px){
+  h2{ font-size:1.6rem; }
+  .nav-links{ display:none; }
 }
-
-.info-box ul {
-    margin-left: 20px;
-}
-
-/* Footer */
-footer {
-    text-align: center;
-    padding: 35px 20px;
-    background-color: #000000;
-    border-top: 2px solid #c5b77f;
-    margin-top: 50px;
-    font-size: 0.95rem;
-    color: #c5b77f;
-    text-shadow: 0 0 2px rgba(197,183,127,0.2);
-}
-
-/* Floating contact buttons */
-.contact-buttons {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    z-index: 1000;
-}
-
-.contact-buttons a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(197,183,127,0.05);
-    color: #bfa15a;
-    font-size: 1.5rem;
-    text-decoration: none;
-    backdrop-filter: blur(5px);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.contact-buttons a:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 8px #bfa15a;
-}
-
-/* Mobile improvements */
-@media(max-width: 600px) {
-    header h1 { font-size: 2rem; }
-    h2 { font-size: 1.6rem; }
-    .contact-buttons { bottom: 15px; right: 15px; }
-    .container { margin-bottom: 80px; }
-    .pyramid-row { flex-wrap: wrap; }
-    .pyramid-row .rate-card { width: calc(50% - 12px); }
+@media (max-width:520px){
+  :root{ --card-w: 160px; --card-h: 160px; }
+  .rates{ grid-template-columns: repeat(1,minmax(160px,1fr)); }
+  .contact-btn{ width:46px;height:46px;font-size:16px; }
+  .mobile-cta{ display:flex; justify-content:center; gap:10px; align-items:center; }
+  header h1{ font-size:22px; }
 }
 </style>
 </head>
 <body>
 
+<!-- STICKY NAV -->
+<div class="sticky-nav" aria-hidden="false">
+  <div class="nav-inner">
+    <div class="nav-logo">Irys Piloting Services</div>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#maintenance">Maintenance</a>
+      <a href="#quests">Quests</a>
+      <a href="#events">Events</a>
+      <a href="#endgame">Endgame</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#exploration">Exploration</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div style="margin-left:12px;">
+      <button class="btn" onclick="downloadPNG()">Download Rate Sheet</button>
+    </div>
+  </div>
+</div>
+
 <header>
-    <h1>Irys Piloting Services</h1>
+  <h1>Irys Piloting Services</h1>
 </header>
 
 <div class="container">
 
-<!-- MAINTENANCE -->
-<h2><i class="fas fa-tools"></i> Maintenance</h2>
-<div class="rates">
-    <div class="rate-card"><h3>Daily</h3><p>20 PHP</p></div>
-    <div class="rate-card"><h3>Weekly</h3><p>120 PHP</p></div>
-    <div class="rate-card"><h3>Monthly</h3><p>520 PHP</p></div>
-    <div class="rate-card"><h3>Crystal Flies Hunt</h3><p>1 PHP per 2 Crystal Flies</p></div>
-</div>
-<p class="note">*Account Maintenance includes Dailies + Resin Burn only.*</p>
+  <!-- MAINTENANCE -->
+  <h2 id="maintenance"><i class="fas fa-tools"></i> Maintenance</h2>
 
-<!-- QUESTS -->
-<h2><i class="fas fa-scroll"></i> Quests</h2>
-<div>
-    <div class="pyramid-row">
-        <div class="rate-card"><h3>Story Quest</h3><p>120 PHP</p></div>
-        <div class="rate-card"><h3>Archon Quest</h3><p>150–300 PHP per Act</p></div>
-        <div class="rate-card"><h3>Event Quest</h3><p>100–200 PHP</p></div>
-    </div>
-    <div class="pyramid-row" style="margin-top: 10px;">
-        <div class="rate-card"><h3>Main World Quest</h3><p>100–200 PHP</p></div>
-        <div class="rate-card"><h3>Side Quests</h3><p>20–100 PHP</p></div>
-    </div>
-</div>
+  <div class="rates" role="list">
+    <div class="rate-card" role="listitem" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <div class="shine" aria-hidden="true"></div>
+      <div class="orn" aria-hidden="true"></div>
 
-<!-- EVENTS -->
-<h2><i class="fas fa-calendar-alt"></i> Events</h2>
-<div class="rates">
-    <div class="rate-card"><h3>Minor Events</h3><p>80 PHP</p></div>
-    <div class="rate-card"><h3>Major Events</h3><p>200–350 PHP (Quest Included)</p></div>
-</div>
+      <h3>Daily</h3>
+      <p>20 PHP</p>
+    </div>
 
-<!-- ENDGAME -->
-<h2><i class="fas fa-dungeon"></i> Endgame</h2>
-<div class="rates">
-    <div class="rate-card"><h3>Abyss</h3><p>Floor 11-12 - 100 PHP</p></div>
-    <div class="rate-card">
-        <h3>Imaginarium Theater</h3>
-        <p>Hard Mode - 150 PHP</p>
-        <p>Visionary Mode - 200 PHP</p>
-        <p>Lunar Mode - 230 PHP</p>
+    <div class="rate-card" role="listitem" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <div class="shine" aria-hidden="true"></div>
+      <div class="orn" aria-hidden="true"></div>
+
+      <h3>Weekly</h3>
+      <p>120 PHP</p>
     </div>
-    <div class="rate-card">
-        <h3>Stygian Onslaught</h3>
-        <p>Hard – 80 PHP</p>
-        <p>Menacing – 150 PHP</p>
-        <p>Fearless – 200 PHP</p>
+
+    <div class="rate-card" role="listitem" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <div class="shine" aria-hidden="true"></div>
+      <div class="orn" aria-hidden="true"></div>
+
+      <h3>Monthly</h3>
+      <p>520 PHP</p>
     </div>
-</div>
-<p class="note">*Prices may vary depending on account investment.*</p>
+
+    <div class="rate-card" role="listitem" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>  
+      <div class="shine" aria-hidden="true"></div>
+      <div class="orn" aria-hidden="true"></div>
+
+      <h3>Crystal Flies Hunt</h3>
+      <p>1 PHP per 2 Crystal Flies</p>
+    </div>
+  </div>
+
+  <p class="note">*Account Maintenance includes Dailies + Resin Burn only.*</p>
+
+  <!-- QUESTS -->
+  <h2 id="quests"><i class="fas fa-scroll"></i> Quests</h2>
+  <div class="pyramid-row" aria-hidden="false">
+    <div class="rate-card" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Story Quest</h3>
+      <p>120 PHP</p>
+    </div>
+
+    <div class="rate-card" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Archon Quest</h3>
+      <p>150–300 PHP per Act</p>
+    </div>
+
+    <div class="rate-card" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Event Quest</h3>
+      <p>100–200 PHP</p>
+    </div>
+  </div>
+
+  <div class="pyramid-row" style="margin-top:10px;">
+    <div class="rate-card" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Main World Quest</h3>
+      <p>100–200 PHP</p>
+    </div>
+    <div class="rate-card" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Side Quests</h3>
+      <p>20–100 PHP</p>
+    </div>
+  </div>
+
+  <!-- EVENTS -->
+  <h2 id="events"><i class="fas fa-calendar-alt"></i> Events</h2>
+  <div class="rates">
+    <div class="rate-card" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Minor Events</h3>
+      <p>80 PHP</p></div>
+    <div class="rate-card" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Major Events</h3>
+      <p>200–350 PHP (Quest Included)</p></div>
+  </div>
+
+  <!-- ENDGAME -->
+  <h2 id="endgame"><i class="fas fa-dungeon"></i> Endgame</h2>
+  <div class="rates">
+    <div class="rate-card" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Abyss</h3>
+      <p>Floor 11-12 - 100 PHP</p></div>
+    <div class="rate-card" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Imaginarium Theater</h3>
+      <p class="multi">Hard Mode - 150 PHP<br>Visionary Mode - 200 PHP<br>Lunar Mode - 230 PHP</p>
+    </div>
+    <div class="rate-card" tabindex="0">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Stygian Onslaught</h3>
+      <p class="multi">Hard – 80 PHP<br>Menacing – 150 PHP<br>Fearless – 200 PHP</p>
+    </div>
+  </div>
+
+  <p class="note">*Prices may vary depending on account investment.*</p>
 
 <!-- ACHIEVEMENTS -->
-<h2><i class="fas fa-trophy"></i> Achievements</h2>
+<h2 id="achievements"><i class="fas fa-trophy"></i> Achievements</h2>
 <div class="rates">
-    <div class="rate-card"><h3>Normal Achievements</h3><p>5-20 PHP</p></div>
-    <div class="rate-card"><h3>Quest Related Achievements</h3><p>20-50 PHP</p></div>
-    <div class="rate-card"><h3>Local Legends Achievements</h3><p>3 achievements per local legend – 60 PHP</p></div>
+  <div class="rate-card">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Normal Achievements</h3>
+      <p>5–20 PHP</p>
+  </div>
+
+  <div class="rate-card">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Quest Related Achievements</h3>
+      <p>20–50 PHP</p>
+  </div>
+
+  <div class="rate-card">
+      <h3>Local Legends Achievements</h3>
+      <p>3 achievements per local legend - 60 PHP</p>
+  </div>
 </div>
 
-<!-- EXPLORATION -->
-<h2><i class="fas fa-map-marked-alt"></i> Exploration</h2>
-<div class="rates">
-    <div class="rate-card">
-        <h3>Exploration Service</h3>
-        <p>*Prices vary depending on exploration status and areas to explore.*</p>
-        <p>*I usually include doing all side quests and world quests in areas to explore to ensure all chests and puzzles are cleared.*</p>
+
+  <!-- EXPLORATION -->
+  <h2 id="exploration"><i class="fas fa-map-marked-alt"></i> Exploration</h2>
+  <div class="rates">
+    <div class="rate-card" tabindex="0" style="grid-column:1/-1;">
+      <div class="corner tl" aria-hidden="true"></div>
+      <div class="corner tr" aria-hidden="true"></div>
+      <div class="corner bl" aria-hidden="true"></div>
+      <div class="corner br" aria-hidden="true"></div>
+      <h3>Exploration Service</h3>
+      <p>*Prices vary depending on exploration status and areas to explore.*</p>
+      <p>*I usually include doing all side quests and world quests in areas to explore to ensure all chests and puzzles are cleared.*</p>
     </div>
-</div>
+  </div>
 
-<!-- DISCLAIMER -->
-<h2><i class="fas fa-shield-alt"></i> Safety & Disclaimer</h2>
-<div class="info-box">
+  <!-- DISCLAIMER -->
+  <h2 id="faq"><i class="fas fa-shield-alt"></i> Safety & FAQ</h2>
+  <div class="info-box">
     <ul>
-        <li>All piloting is done manually — no cheats, bots, or third-party tools.</li>
-        <li>I do not change builds, artifacts, or settings unless requested.</li>
-        <li>I only access your account to complete the tasks you asked for.</li>
-        <li>Updates/screenshots can be provided during runs if requested.</li>
+      <li>All piloting is done manually — no cheats, bots, or third-party tools.</li>
+      <li>I do not change builds, artifacts, or settings unless requested.</li>
+      <li>I only access your account to complete the tasks you asked for.</li>
+      <li>Updates/screenshots can be provided during runs if requested.</li>
     </ul>
-</div>
+  </div>
 
-<!-- FAQ -->
-<h2><i class="fas fa-question-circle"></i> Frequently Asked Questions</h2>
-<div class="info-box">
+  <div class="info-box">
     <p><strong>Q: Do I need to stay online while you pilot?</strong><br>A: No, you can log off. I will message you when I'm done.</p>
     <p><strong>Q: How long does a run take?</strong><br>A: Depends on the content, but most tasks are completed same-day unless it’s large exploration.</p>
     <p><strong>Q: Do you accept partial quests?</strong><br>A: Yes, prices adjust depending on progress.</p>
-    <p><strong>Q: How do I pay?</strong><br>A: GCash — details will be given after contacting me.</p>
-</div>
+    <p><strong>Q: How do I pay?</strong><br>A: Payment through GCash — details will be given after contacting me.</p>
+  </div>
 
-</div>
+</div> <!-- container -->
 
 <!-- Floating Contact Buttons -->
-<div class="contact-buttons">
-    <a href="https://www.facebook.com/DiAkosiRylle" target="_blank"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://discord.com/users/731817318056984618" target="_blank"><i class="fab fa-discord"></i></a>
+<div class="contact-buttons" aria-hidden="false">
+  <a class="contact-btn tooltip" role="button" aria-label="Open Discord" data-tip="Discord" onclick="openDiscord()"><i class="fab fa-discord"></i></a>
+  <a class="contact-btn tooltip" role="button" aria-label="Open Facebook" data-tip="Facebook" onclick="openFacebook()"><i class="fab fa-facebook-f"></i></a>
 </div>
 
 <footer>
-    Contact me via Facebook or Discord to access my services!
+  <div style="max-width:1000px;margin:0 auto;padding:0 18px;">
+    © Irys Piloting Services — Contact via Facebook or Discord
+  </div>
 </footer>
 
+<!-- JS: deep links, print to PDF, modal -->
+<script>
+// -------- Deep link attempt + fallback --------
+function openDiscord(){
+  // Try to open Discord app (this URL may work on many devices)
+  window.location = "discord://-/users/731817318056984618";
+  // fallback after delay
+  setTimeout(function(){
+    window.location = "https://discord.com/users/731817318056984618";
+  }, 700);
+}
+
+function openFacebook(){
+  // NOTE: For best results replace the numeric ID with your real FB numeric ID
+  // e.g., fb://profile/100012345678901
+  window.location = "fb://profile/100093847382716";
+  setTimeout(function(){
+    window.location = "https://www.facebook.com/DiAkosiRylle";
+  }, 700);
+}
+
+function downloadPNG() {
+    const link = document.createElement('a');
+    link.href = "Irys Piloting Services.png"; // <-- your PNG file path
+    link.download = "Irys_Rate_Sheet.png";
+    link.click();
+}
+
+
+// --- Smooth highlight for focused cards (accessibility) ---
+document.querySelectorAll('.rate-card').forEach(function(card){
+  card.addEventListener('focus', function(){ card.style.boxShadow = '0 16px 40px rgba(191,161,90,0.08)'; });
+  card.addEventListener('blur', function(){ card.style.boxShadow = ''; });
+});
+</script>
 </body>
 </html>
